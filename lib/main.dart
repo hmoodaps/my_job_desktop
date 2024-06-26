@@ -1,28 +1,35 @@
-import 'dart:io';
-
+import 'package:desktop_window/desktop_window.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import 'common/backend/auth_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_job_desktop/common/backend/auth_service.dart';
+import 'package:window_manager/window_manager.dart';
 import 'common/cubit/app_states.dart';
 import 'common/cubit/cubit.dart';
-
-
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
-    SystemUiOverlay.top
-  ]);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(1700, 900),
+    minimumSize: Size(1700, 900),
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
 
-  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -34,8 +41,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: cub.toggleLightAndDark(context),
-              home: const Auth(),
-
+              home:   const Auth(),
             );
           }),
     );

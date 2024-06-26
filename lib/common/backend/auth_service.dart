@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../screens/home.dart';
 import '../../screens/login.dart';
+import '../../screens/welcome.dart';
 import '../cubit/app_states.dart';
 import '../cubit/cubit.dart';
 
@@ -20,10 +21,11 @@ class Auth extends StatelessWidget {
         return StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.hasData ) {
               return const Home();
             }
-            return const Login();
+              return LoginPage();
+
           },
         );
       },

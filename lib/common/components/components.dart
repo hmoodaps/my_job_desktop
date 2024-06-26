@@ -166,20 +166,46 @@ defaultTextFormField({
   );
 }
 
-navigatorTo(context, nextPage) {
+void navigatorTo(BuildContext context, Widget nextPage) {
   Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => nextPage,
-      ));
+    context,
+    PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => nextPage,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = const Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    ),
+  );
 }
+
 
 navigatorReplace(context, nextPage) {
   Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => nextPage,
-      ));
+    PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>  nextPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = const Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    ),);
 }
 
 List<Color> myColorList = [
@@ -195,17 +221,7 @@ List<Color> myColorList = [
   const Color(0xFFEEE8AA), // Pale Goldenrod
 ];
 
-// //toast message require : fluttertoast and min sdk 21
-// showToastMSG(String msg) {
-//   return Fluttertoast.showToast(
-//       msg: msg,
-//       toastLength: Toast.LENGTH_SHORT,
-//       gravity: ToastGravity.BOTTOM,
-//       timeInSecForIosWeb: 3,
-//       backgroundColor: Colors.black.withOpacity(0.7),
-//       textColor: Colors.white,
-//       fontSize: 16.0);
-// }
+
 
 //defaultColor
 Color defaultBlueColor = const Color(0xFF40E0D0);
@@ -301,112 +317,3 @@ class TypewriterTextState extends State<TypewriterText> {
   }
 }
 
-//beautiful  snack bar require : awesome_snackbar_content
-// ScaffoldMessengerState showMessageWrong(
-//     {required ContentType contentType, required BuildContext   context, required String msg}) {
-//   final snackBar = SnackBar(
-//     elevation: 0,
-//     behavior: SnackBarBehavior.floating,
-//     backgroundColor: Colors.transparent,
-//     duration: const Duration(seconds: 7),
-//     content: AwesomeSnackbarContent(
-//       title: 'OH SORRY !!',
-//       message: msg,
-//       contentType: contentType,
-//     ),
-//   );
-//   return ScaffoldMessenger.of(context)
-//     ..hideCurrentSnackBar()
-//     ..showSnackBar(snackBar);
-// }
-
-Widget imageButton(
-    {required String imagePath, required Function()? onPressed ,required context , required Color textColor}) =>
-    GestureDetector(
-      onTap: onPressed ,
-      child: Card(
-        child: Container(
-          width: MediaQuery.of(context).size.width-150,
-          decoration: BoxDecoration(
-            borderRadius:BorderRadius.circular(50),
-          ),
-          child:Row(
-            children: [
-              Container(
-                width: 90,
-                height: 90,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.transparent,
-                ),
-                child: Image.asset(
-                  imagePath,
-                ),
-              ),
-              Text('Sign in with google' , style: TextStyle(color:textColor ),),
-            ],
-          ) ,
-        ),
-      ),
-    );
-
-
-
-
-//flutter pub add cupertino_icons firebase_analytics firebase_core firebase_auth cloud_firestore google_sign_in awesome_snackbar_content flutter_facebook_auth twitter_login http font_awesome_flutter firebase_messaging_platform_interface onboarding flutter_bloc shared_preferences smooth_page_indicator dio conditional_builder_null_safety flutter_icon_snackbar shimmer_effect carousel_slider fluttertoast iconly lottie awesome_dialog
-
-//these components created here
-Widget myDrawer({required String profileImage , required String name,required Color nameColor ,required Color drawerColor ,required Color drawerHeaderColor , required BuildContext context}) => Drawer(
-  backgroundColor: drawerColor,
-  child: Column(
-    children: [
-      myDrawerHeader(name : name,nameColor:nameColor ,drawerHeaderColor : drawerHeaderColor , profileImage : profileImage),
-      // ListTile(onTap: (){navigatorTo(context, Friends());},title: Text('friends'), ),
-      // SizedBox(height: 10,),
-      // ListTile(onTap: (){navigatorTo(context, FriendReq());},title: Text('FriendReq'), ),
-    ],
-  ),
-);
-
-Widget myDrawerHeader({required String name , required Color drawerHeaderColor ,required Color nameColor , required String profileImage  }) => DrawerHeader(
-  decoration: BoxDecoration(color: drawerHeaderColor),
-  child: Column(
-    children: [
-      Center(
-        child: CircleAvatar(
-          backgroundImage: NetworkImage(profileImage),
-          radius: 50,
-        ),
-      ),
-      const Spacer(),
-      Text(
-        name.toUpperCase(),
-        style: TextStyle(
-          color: nameColor,
-          fontFamily: 'rocky',
-        ),
-      ),
-    ],
-  ),
-);
-
-// Widget shimmer({required Widget child }) => ShimmerEffect(
-//   baseColor: defaultBlueColor,
-//   highlightColor: defaultPurpleColor,
-//   child: Ink(
-//       decoration:  BoxDecoration(
-//         borderRadius: const BorderRadius.only(
-//           topLeft: Radius.circular(20),
-//           bottomRight: Radius.circular(20),
-//         ),
-//         gradient: LinearGradient(
-//           begin: Alignment.centerRight,
-//           end: Alignment.centerLeft,
-//           colors: [
-//             defaultPurpleColor,
-//             defaultPurpleColor,
-//           ],
-//         ),
-//       ),
-//       child: child),
-// );

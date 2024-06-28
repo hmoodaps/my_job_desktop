@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
-import 'package:my_job_desktop/common/cubit/app_states.dart';
-import 'package:my_job_desktop/common/cubit/cubit.dart';
+import 'package:my_job_desktop/cubit/app_states.dart';
+import 'package:my_job_desktop/cubit/cubit.dart';
 
 class Programmer extends StatelessWidget {
   const Programmer({super.key});

@@ -1,12 +1,10 @@
-import 'package:desktop_window/desktop_window.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_job_desktop/common/backend/auth_service.dart';
+import 'package:my_job_desktop/backend/auth_service.dart';
 import 'package:window_manager/window_manager.dart';
-import 'common/cubit/app_states.dart';
-import 'common/cubit/cubit.dart';
+import 'cubit/app_states.dart';
+import 'cubit/cubit.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -15,8 +13,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   WindowOptions windowOptions = const WindowOptions(
-    size: Size(1700, 900),
-    minimumSize: Size(1700, 900),
+    size: Size(1450, 750),
+    minimumSize: Size(1450, 750),
   );
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();

@@ -45,4 +45,18 @@ class CreateUserError extends AppState {
   String toString() => 'CreateUserError: $errorMessage';
 }
 
+class SalaryCalculated extends AppState {
+  final double totalSalary;
 
+  SalaryCalculated(this.totalSalary);
+}
+class PickSingleFile extends AppState{}
+class UploadFileSuccess extends AppState{}
+class UploadFile extends AppState{}
+class UploadFileFailed extends AppState{}
+class DeleteFileSuccess extends AppState{}
+class DeleteFile extends AppState{}
+class DeleteFileFailed extends AppState{}
+class PickMultipleFiles extends AppState{}
+class UploadFiles extends AppState{}
+class FilePickCancelled extends AppState{}

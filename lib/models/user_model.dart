@@ -27,11 +27,14 @@ class UserModel {
   String? profilePhoto;
   double? dailyTravelCost;
   String ? password ;
+  String ? bonusesAndPromotions ;
+
 
   UserModel({
     this.name,
     this.password,
     this.uid,
+    this.bonusesAndPromotions,
     this.bsn,
     this.hourlyRate,
     this.weeklyHours,
@@ -64,6 +67,7 @@ class UserModel {
       password: json['password'],
       uid: json['uid'],
       bsn: json['bsn'],
+      bonusesAndPromotions: json['bonusesAndPromotions']??'',
       hourlyRate: json['hourlyRate']?.toDouble(),
       weeklyHours: json['weeklyHours']?.toDouble(),
       taxes: json['taxes']?.toDouble(),
@@ -94,6 +98,7 @@ class UserModel {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
+      'bonusesAndPromotions': bonusesAndPromotions,
       'password': password,
       'uid': uid,
       'bsn': bsn,

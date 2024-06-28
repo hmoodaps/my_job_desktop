@@ -316,4 +316,35 @@ class TypewriterTextState extends State<TypewriterText> {
     );
   }
 }
+Future showExitConfirmation(context) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Are you sure ?'),
+      content: const Text(
+        'any changes you made will be ignored',
+        style: TextStyle(color: Colors.black),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'No',
+              style: TextStyle(color: Colors.green),
+            )),
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Yes',
+              style: TextStyle(color: Colors.red),
+            )),
+      ],
+    ),
+  );
+}
 

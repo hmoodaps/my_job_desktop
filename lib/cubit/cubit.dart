@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -95,6 +99,7 @@ class CubitClass extends Cubit<AppState> {
     String? passportPhoto,
     String? profilePhoto,
     double? dailyTravelCost,
+    String ? bonusesAndPromotions,
   }) {
     emit(AddUser());
     try {
@@ -131,6 +136,7 @@ class CubitClass extends Cubit<AppState> {
           profilePhoto: profilePhoto,
           dailyTravelCost: dailyTravelCost,
           context: context,
+          bonusesAndPromotions: bonusesAndPromotions,
         );
       }).catchError((e) {
         Navigator.pop(context);
@@ -177,6 +183,7 @@ class CubitClass extends Cubit<AppState> {
     String? passportPhoto,
     String? profilePhoto,
     double? dailyTravelCost,
+    String ? bonusesAndPromotions,
   }) async {
     emit(CreateUser());
     UserModel model = UserModel(
@@ -208,6 +215,7 @@ class CubitClass extends Cubit<AppState> {
       passportPhoto: passportPhoto ?? 'no Passport Photo yet',
       profilePhoto: profilePhoto ?? 'no Profile Photo yet',
       dailyTravelCost: dailyTravelCost ?? 0.0,
+      bonusesAndPromotions: bonusesAndPromotions ?? '',
     );
     try {
       await FirebaseFirestore.instance
@@ -260,5 +268,97 @@ class CubitClass extends Cubit<AppState> {
     selectedCategory = category;
     emit(UpdateCategory(category));
   }
+//Calculate Salary
+  void calculateSalary(double hourlyRate, double weeklyHours) {
+    double totalSalary = (hourlyRate * (weeklyHours / 5) * 22);
+    emit(SalaryCalculated(totalSalary));
+  }
+
+  //pick file
+
+  Future<String?> pickSingleFile({
+    required String uid,
+    required String field,
+  }) async {
+    emit(UploadFile());
+    String? url;
+    var result = await FilePicker.platform.pickFiles();
+    print(result.toString());
+    if (result != null) {
+      url = await uploadFile(uid: uid, field: field, pickedFile: File(result.files.single.path!));
+      emit(PickSingleFile());
+    }  else {
+  emit(FilePickCancelled());
+  return null;
+  }
+    return url;
+  }
+
+  Future<String> uploadFile({
+    required String uid,
+    required String field,
+    required File pickedFile,
+  }) async {
+    String? fileUrl;
+    try {
+      var snapshot = await FirebaseStorage.instance
+          .ref('users/$uid/$field/${Uri.file(pickedFile.path).pathSegments.last}')
+          .putFile(pickedFile);
+
+      var downloadUrl = await snapshot.ref.getDownloadURL();
+      fileUrl = downloadUrl.toString();
+
+      emit(UploadFileSuccess());
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      emit(UploadFileFailed());
+    }
+
+    return fileUrl!;
+  }
+  Future<List<String>?> pickMultipleFiles({
+    required String uid,
+    required String field,
+  }) async {
+    emit(UploadFiles());
+    List<String> urls = [];
+
+    var result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    print(result.toString());
+
+    if (result != null) {
+      for (var file in result.files) {
+        var url = await uploadFile(uid: uid, field: field, pickedFile: File(file.path!));
+        urls.add(url);
+      }
+      emit(PickMultipleFiles());
+    }else {
+      emit(FilePickCancelled());
+      return null;
+    }
+
+    return urls;
+  }
+
+
+
+  Future<void> deleteFile({
+    required String downloadUrl,
+  }) async {
+    emit(DeleteFile());
+    try {
+      Reference ref = FirebaseStorage.instance.refFromURL(downloadUrl);
+      await ref.delete();
+      emit(DeleteFileSuccess());
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error deleting file: $error');
+      }
+      emit(DeleteFileFailed());
+
+    }
+}
 
 }

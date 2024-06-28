@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconly/iconly.dart';
-import 'package:my_job_desktop/common/cubit/app_states.dart';
-import 'package:my_job_desktop/common/cubit/cubit.dart';
+import 'package:my_job_desktop/components/components.dart';
+import 'package:my_job_desktop/cubit/app_states.dart';
+import 'package:my_job_desktop/cubit/cubit.dart';
+import 'package:my_job_desktop/screens/upload_contract.dart';
+import 'package:my_job_desktop/screens/upload_identity.dart';
+import 'package:my_job_desktop/screens/upload_qualification.dart';
 
 class AddEmployee extends StatelessWidget {
   AddEmployee({super.key});
@@ -13,6 +18,7 @@ class AddEmployee extends StatelessWidget {
   final idNumberController = TextEditingController();
   final maritalStatusController = TextEditingController();
   final positionController = TextEditingController();
+  final departController = TextEditingController();
   final bankAccountIBANController = TextEditingController();
   final contractStartDateController = TextEditingController();
   final contractLastDateController = TextEditingController();
@@ -21,23 +27,21 @@ class AddEmployee extends StatelessWidget {
   final taxesController = TextEditingController();
   final totalSalaryController = TextEditingController();
   final healthInsuranceController = TextEditingController();
-  final salaryIncreaseLastMonthController = TextEditingController();
   final monthlySalaryController = TextEditingController();
   final addressController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final emailController = TextEditingController();
   final passController = TextEditingController();
-  final overtimeHoursLastWeekController = TextEditingController();
-  final hoursMissedLastWeekController = TextEditingController();
-  final daysMissedLastWeekController = TextEditingController();
-  final totalSalaryLastMonthController = TextEditingController();
-  final dailyTravelCostController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     CubitClass cub = CubitClass.get(context);
     return BlocConsumer<CubitClass, AppState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is SalaryCalculated) {
+          totalSalaryController.text = state.totalSalary.toStringAsFixed(2);
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -72,23 +76,11 @@ class AddEmployee extends StatelessWidget {
                       healthInsurance:
                           double.tryParse(healthInsuranceController.text),
                       taxes: double.tryParse(taxesController.text),
-                      hoursLastWeek:
-                          double.tryParse(totalSalaryController.text),
-                      hoursMissedLastWeek:
-                          double.tryParse(healthInsuranceController.text),
-                      daysMissedLastWeek:
-                          int.tryParse(daysMissedLastWeekController.text),
-                      salaryLastMonth:
-                          double.tryParse(totalSalaryLastMonthController.text),
                       maritalStatus: maritalStatusController.text,
                       dob: DateTime.parse(dobController.text),
                       address: addressController.text,
                       phoneNumber: phoneNumberController.text,
                       bankAccountIBAN: bankAccountIBANController.text,
-                      overtimeHoursLastWeek:
-                          double.tryParse(overtimeHoursLastWeekController.text),
-                      dailyTravelCost:
-                          double.tryParse(dailyTravelCostController.text),
                     );
                   },
                   child: const Text(
@@ -143,26 +135,9 @@ class AddEmployee extends StatelessWidget {
                         children: [
                           Expanded(
                             child: MaterialButton(
-                              onPressed: () {},
-                              height: 50,
-                              color: Colors.blue,
-                              child: const Row(
-                                children: [
-                                  Icon(IconlyBroken.chat),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text('Send Message'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: MaterialButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                navigatorTo(context, const UploadContract());
+                              },
                               height: 50,
                               color: Colors.blue,
                               child: const Row(
@@ -181,7 +156,9 @@ class AddEmployee extends StatelessWidget {
                           ),
                           Expanded(
                             child: MaterialButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                navigatorTo(context, const UploadIdentity());
+                              },
                               height: 50,
                               color: Colors.blue,
                               child: const Row(
@@ -200,7 +177,9 @@ class AddEmployee extends StatelessWidget {
                           ),
                           Expanded(
                             child: MaterialButton(
-                              onPressed: () {},
+                              onPressed: () {
+
+                              },
                               height: 50,
                               color: Colors.blue,
                               child: const Row(
@@ -209,7 +188,7 @@ class AddEmployee extends StatelessWidget {
                                   SizedBox(
                                     width: 8,
                                   ),
-                                  Text('Change photo'),
+                                  Text('Upload Profile photo'),
                                 ],
                               ),
                             ),
@@ -307,6 +286,7 @@ class AddEmployee extends StatelessWidget {
                       ),
                       Row(
                         children: [
+
                           Expanded(
                             child: MaterialButton(
                               onPressed: () async {
@@ -354,22 +334,69 @@ class AddEmployee extends StatelessWidget {
                           Expanded(
                             child: MaterialButton(
                               onPressed: () {
-                                showModalBottomSheet(context: context, builder: (context)=>Container(
-                                  height: 100,
-                                  width: 300,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white,
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => Container(
+                                    height: 100,
+                                    width: 250,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: Center(
+                                            child: InkWell(
+                                              onTap: () {
+                                                maritalStatusController.text =
+                                                    'Married';
+                                                Navigator.pop(context);
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8),
+                                                width: double.infinity,
+                                                child: const Text(
+                                                  'Married',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Center(
+                                            child: InkWell(
+                                              onTap: () {
+                                                maritalStatusController.text =
+                                                    'Not Married';
+                                                Navigator.pop(context);
+                                              },
+                                              child: Container(
+                                                width: double.infinity,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8),
+                                                child: const Text(
+                                                  'Not Married',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  child: Column(
-                                    children: [
-                                      const Text('Married'),
-                                      const SizedBox(height: 10,
-                                      ),
-                                      const Text('Not Married'),
-                                    ],
-                                  ),
-                                ));
+                                );
                               },
                               height: 50,
                               color: Colors.blue,
@@ -387,28 +414,90 @@ class AddEmployee extends StatelessWidget {
                           const SizedBox(
                             width: 20,
                           ),
-                          Expanded(
-                            child: MaterialButton(
-                              onPressed: () {},
-                              height: 50,
-                              color: Colors.blue,
-                              child: const Row(
-                                children: [
-                                  Icon(Icons.business_center),
-                                  SizedBox(
-                                    width: 8,
+                          MaterialButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => Container(
+                                  height: 500,
+                                  width: 250,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white,
                                   ),
-                                  Text('position'),
-                                ],
-                              ),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        _buildDepartmentOption('HR', context),
+                                        _buildDepartmentOption('Finance', context),
+                                        _buildDepartmentOption('IT', context),
+                                        _buildDepartmentOption('Marketing', context),
+                                        _buildDepartmentOption('Sales', context),
+                                        _buildDepartmentOption('Customer Service', context),
+                                        _buildDepartmentOption('Security', context),
+                                        _buildDepartmentOption('Cleaning', context),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            height: 50,
+                            color: Colors.blue,
+                            child: const Row(
+                              children: [
+                                Icon(Icons.business_center),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text('Select Department'),
+                              ],
                             ),
                           ),
                           const SizedBox(
                             width: 20,
                           ),
+                          departController.text.isNotEmpty
+                              ? MaterialButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) => Container(
+                                      height: 500,
+                                      width: 250,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.white,
+                                      ),
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: _buildPositionOptions(departController.text, positionController , context),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                height: 50,
+                                color: Colors.blue,
+                                child: const Row(
+                                  children: [
+                                    Icon(Icons.business_center),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text('Select Position'),
+                                  ],
+                                ),
+                              )
+                              : const SizedBox(),
+                          const SizedBox(
+                            width: 20,
+                          ),
                           Expanded(
                             child: MaterialButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                navigatorTo(context, const UploadQualification());
+                              },
                               height: 50,
                               color: Colors.blue,
                               child: const Row(
@@ -464,6 +553,7 @@ class AddEmployee extends StatelessWidget {
                             ),
                           ),
                           _defaultField(
+                            readOnly: true,
                             labelColor:
                                 cub.isDark ? Colors.white : Colors.black,
                             context: context,
@@ -512,6 +602,7 @@ class AddEmployee extends StatelessWidget {
                             ),
                           ),
                           _defaultField(
+                            readOnly: true,
                             labelColor:
                                 cub.isDark ? Colors.white : Colors.black,
                             context: context,
@@ -527,13 +618,25 @@ class AddEmployee extends StatelessWidget {
                       Row(
                         children: [
                           _defaultField(
+                            readOnly: true,
+                            labelColor:
+                                cub.isDark ? Colors.white : Colors.black,
+                            context: context,
+                            controller: departController,
+                            labelText: 'depart',
+                            prefixIcon: const Icon(
+                              Icons.work,
+                              color: Color(0xFF7FFFD4),
+                            ),
+                          ), _defaultField(
+                            readOnly: true,
                             labelColor:
                                 cub.isDark ? Colors.white : Colors.black,
                             context: context,
                             controller: positionController,
                             labelText: 'Position',
                             prefixIcon: const Icon(
-                              Icons.work,
+                              FontAwesomeIcons.helmetSafety,
                               color: Color(0xFF7FFFD4),
                             ),
                           ),
@@ -564,6 +667,7 @@ class AddEmployee extends StatelessWidget {
                             ),
                           ),
                           _defaultField(
+                            readOnly: true,
                             labelColor:
                                 cub.isDark ? Colors.white : Colors.black,
                             context: context,
@@ -575,6 +679,7 @@ class AddEmployee extends StatelessWidget {
                             ),
                           ),
                           _defaultField(
+                            readOnly: true,
                             labelColor:
                                 cub.isDark ? Colors.white : Colors.black,
                             context: context,
@@ -601,6 +706,14 @@ class AddEmployee extends StatelessWidget {
                             ),
                           ),
                           _defaultField(
+                            textInputType: TextInputType.number,
+                            onChange: (value) {
+                              double hourlyRate = double.tryParse(value) ?? 0.0;
+                              double weeklyHours =
+                                  double.tryParse(weeklyHoursController.text) ??
+                                      0.0;
+                              cub.calculateSalary(hourlyRate, weeklyHours);
+                            },
                             labelColor:
                                 cub.isDark ? Colors.white : Colors.black,
                             context: context,
@@ -612,6 +725,15 @@ class AddEmployee extends StatelessWidget {
                             ),
                           ),
                           _defaultField(
+                            textInputType: TextInputType.number,
+                            onChange: (value) {
+                              double hourlyRate =
+                                  double.tryParse(hourlyRateController.text) ??
+                                      0.0;
+                              double weeklyHours =
+                                  double.tryParse(value) ?? 0.0;
+                              cub.calculateSalary(hourlyRate, weeklyHours);
+                            },
                             labelColor:
                                 cub.isDark ? Colors.white : Colors.black,
                             context: context,
@@ -627,6 +749,8 @@ class AddEmployee extends StatelessWidget {
                       Row(
                         children: [
                           _defaultField(
+                            textInputType: TextInputType.number,
+                            readOnly: true,
                             labelColor:
                                 cub.isDark ? Colors.white : Colors.black,
                             context: context,
@@ -648,80 +772,7 @@ class AddEmployee extends StatelessWidget {
                               color: Color(0xFF7FFFD4),
                             ),
                           ),
-                          _defaultField(
-                            labelColor:
-                                cub.isDark ? Colors.white : Colors.black,
-                            context: context,
-                            controller: salaryIncreaseLastMonthController,
-                            labelText: 'Salary Increase Last Month',
-                            prefixIcon: const Icon(
-                              Icons.attach_money,
-                              color: Color(0xFF7FFFD4),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          _defaultField(
-                            labelColor:
-                                cub.isDark ? Colors.white : Colors.black,
-                            context: context,
-                            controller: monthlySalaryController,
-                            labelText: 'Salary last month',
-                            prefixIcon: const Icon(
-                              Icons.attach_money,
-                              color: Color(0xFF7FFFD4),
-                            ),
-                          ),
-                          _defaultField(
-                            labelColor:
-                                cub.isDark ? Colors.white : Colors.black,
-                            context: context,
-                            controller: overtimeHoursLastWeekController,
-                            labelText: 'Overtime Hours last week',
-                            prefixIcon: const Icon(
-                              Icons.timer,
-                              color: Color(0xFF7FFFD4),
-                            ),
-                          ),
-                          _defaultField(
-                            labelColor:
-                                cub.isDark ? Colors.white : Colors.black,
-                            context: context,
-                            controller: hoursMissedLastWeekController,
-                            labelText: 'hours Missed Last week',
-                            prefixIcon: const Icon(
-                              Icons.timer,
-                              color: Color(0xFF7FFFD4),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          _defaultField(
-                            labelColor:
-                                cub.isDark ? Colors.white : Colors.black,
-                            context: context,
-                            controller: daysMissedLastWeekController,
-                            labelText: 'days Missed Last week',
-                            prefixIcon: const Icon(
-                              Icons.timer,
-                              color: Color(0xFF7FFFD4),
-                            ),
-                          ),
-                          _defaultField(
-                            labelColor:
-                                cub.isDark ? Colors.white : Colors.black,
-                            context: context,
-                            controller: dailyTravelCostController,
-                            labelText: 'Daily Travel Cost',
-                            prefixIcon: const Icon(
-                              Icons.money,
-                              color: Color(0xFF7FFFD4),
-                            ),
-                          ),
+
                         ],
                       ),
                     ],
@@ -755,11 +806,13 @@ class AddEmployee extends StatelessWidget {
     TextInputType textInputType = TextInputType.text,
     textInputAction = TextInputAction.next,
     int maxLines = 1,
+    void Function(String)? onChange,
   }) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextFormField(
+          onChanged: onChange,
           maxLines: maxLines,
           textInputAction: textInputAction,
           keyboardType: textInputType,
@@ -810,5 +863,117 @@ class AddEmployee extends StatelessWidget {
         ),
       ),
     );
+  }
+  Widget _buildDepartmentOption(String department, BuildContext context) {
+    return Expanded(
+      child: Center(
+        child: InkWell(
+          onTap: () {
+            departController.text = department;
+            Navigator.pop(context);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            width: double.infinity,
+            child: Text(
+              department,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildPositionOptions(String department, TextEditingController positionController ,BuildContext context) {
+    List<String> positions;
+
+    switch (department) {
+      case 'HR':
+        positions = [
+          'Recruitment Manager',
+          'Training and Development Manager',
+          'Payroll and Benefits Officer',
+        ];
+        break;
+      case 'Finance':
+        positions = [
+          'Financial Analyst',
+          'Accountant',
+          'Auditor',
+        ];
+        break;
+      case 'IT':
+        positions = [
+          'IT Manager',
+          'Software Engineer',
+          'Network Administrator',
+        ];
+        break;
+      case 'Marketing':
+        positions = [
+          'Marketing Manager',
+          'Content Strategist',
+          'SEO Specialist',
+        ];
+        break;
+      case 'Sales':
+        positions = [
+          'Sales Manager',
+          'Account Executive',
+          'Sales Representative',
+        ];
+        break;
+      case 'Customer Service':
+        positions = [
+          'Customer Service Manager',
+          'Support Specialist',
+          'Customer Service Representative',
+        ];
+        break;
+      case 'Security':
+        positions = [
+          'Security Manager',
+          'Security Supervisor',
+          'Security Guard',
+        ];
+        break;
+      case 'Cleaning':
+        positions = [
+          'Cleaning Supervisor',
+          'Janitor',
+          'Cleaning Staff',
+        ];
+        break;
+      default:
+        positions = ['Head of Department', 'Supervisor', 'Worker'];
+    }
+
+    return positions
+        .map((position) => Expanded(
+      child: Center(
+        child: InkWell(
+          onTap: () {
+            positionController.text = position;
+            Navigator.pop(context);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            width: double.infinity,
+            child: Text(
+              position,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ))
+        .toList();
   }
 }

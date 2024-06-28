@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:shimmer_effect/shimmer_effect.dart';
-import '../common/components/components.dart';
-import '../common/cubit/app_states.dart';
-import '../common/cubit/cubit.dart';
+import '../components/components.dart';
+import '../cubit/app_states.dart';
+import '../cubit/cubit.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});

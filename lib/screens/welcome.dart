@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_job_desktop/common/components/components.dart';
+import 'package:my_job_desktop/components/components.dart';
 import 'package:my_job_desktop/screens/login.dart';
 
-import '../common/backend/auth_service.dart';
+import '../backend/auth_service.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({super.key});

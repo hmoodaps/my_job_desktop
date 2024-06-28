@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
-import 'package:my_job_desktop/common/components/components.dart';
+import 'package:my_job_desktop/components/components.dart';
 import 'package:my_job_desktop/screens/employee_details.dart';
-import '../common/cubit/app_states.dart';
-import '../common/cubit/cubit.dart';
+import '../cubit/app_states.dart';
+import '../cubit/cubit.dart';
 import 'add_employee.dart';
 
 class EmployeesManage extends StatelessWidget {

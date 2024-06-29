@@ -1,45 +1,49 @@
+import 'package:intl/intl.dart';
+
 class UserModel {
-  String ? uid;
+  String? uid;
   String? name;
   String? bsn;
   double? hourlyRate;
   double? weeklyHours;
   double? taxes;
-  double? basicSalary;
   double? hoursLastWeek;
   double? hoursMissedLastWeek;
-  int ? daysMissedLastWeek;
+  int? daysMissedLastWeek;
   double? salaryLastMonth;
   String? maritalStatus;
   String? position;
   DateTime? dob;
-  DateTime? startDate;
   String? address;
   String? phoneNumber;
   String? email;
   String? idNumber;
   String? bankAccountIBAN;
-  DateTime? contractEndDate;
+  String? contract;
   double? overtimeHoursLastWeek;
-  double ? healthInsurance;
-  String? idPhoto;
+  double? healthInsurance;
+  String? frontIdPhoto;
+  String? backIdPhoto;
+  String? frontDrivingLicense;
+  String? backDrivingLicense;
   String? passportPhoto;
   String? profilePhoto;
   double? dailyTravelCost;
-  String ? password ;
-  String ? bonusesAndPromotions ;
-
+  String? password;
+  String? bonusesAndPromotions;
+  List<String>? qualifications; // تم تحديث النوع هنا
 
   UserModel({
     this.name,
     this.password,
     this.uid,
+    this.qualifications,
     this.bonusesAndPromotions,
     this.bsn,
     this.hourlyRate,
     this.weeklyHours,
     this.taxes,
-    this.basicSalary,
+    this.contract,
     this.hoursLastWeek,
     this.hoursMissedLastWeek,
     this.daysMissedLastWeek,
@@ -47,82 +51,108 @@ class UserModel {
     this.maritalStatus,
     this.position,
     this.dob,
-    this.startDate,
     this.address,
     this.phoneNumber,
     this.email,
     this.idNumber,
     this.bankAccountIBAN,
-    this.contractEndDate,
     this.overtimeHoursLastWeek,
     this.healthInsurance,
-    this.idPhoto,
+    this.frontIdPhoto,
+    this.backIdPhoto,
+    this.frontDrivingLicense,
+    this.backDrivingLicense,
     this.passportPhoto,
     this.profilePhoto,
     this.dailyTravelCost,
   });
+
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       name: json['name'],
+      contract: json['contract'],
+      qualifications: (json['qualifications'] as List<dynamic>)
+          .map((e) => e.toString())
+          .toList(),
       password: json['password'],
       uid: json['uid'],
       bsn: json['bsn'],
-      bonusesAndPromotions: json['bonusesAndPromotions']??'',
-      hourlyRate: json['hourlyRate']?.toDouble(),
-      weeklyHours: json['weeklyHours']?.toDouble(),
-      taxes: json['taxes']?.toDouble(),
-      basicSalary: json['basicSalary']?.toDouble(),
-      hoursLastWeek: json['hoursLastWeek']?.toDouble(),
-      hoursMissedLastWeek: json['hoursMissedLastWeek']?.toDouble(),
-      daysMissedLastWeek: json['daysMissedLastWeek']?.toDouble(),
-      salaryLastMonth: json['salaryLastMonth']?.toDouble(),
+      bonusesAndPromotions: json['bonusesAndPromotions'] ?? '',
+      hourlyRate: json['hourlyRate'] is String
+          ? double.tryParse(json['hourlyRate']) ?? 0.0
+          : json['hourlyRate']?.toDouble() ?? 0.0,
+      weeklyHours: json['weeklyHours'] is String
+          ? double.tryParse(json['weeklyHours']) ?? 0.0
+          : json['weeklyHours']?.toDouble() ?? 0.0,
+      taxes: json['taxes'] is String
+          ? double.tryParse(json['taxes']) ?? 0.0
+          : json['taxes']?.toDouble() ?? 0.0,
+      hoursLastWeek: json['hoursLastWeek'] is String
+          ? double.tryParse(json['hoursLastWeek']) ?? 0.0
+          : json['hoursLastWeek']?.toDouble() ?? 0.0,
+      hoursMissedLastWeek: json['hoursMissedLastWeek'] is String
+          ? double.tryParse(json['hoursMissedLastWeek']) ?? 0.0
+          : json['hoursMissedLastWeek']?.toDouble() ?? 0.0,
+      daysMissedLastWeek: json['daysMissedLastWeek'],
+      salaryLastMonth: json['salaryLastMonth'] is String
+          ? double.tryParse(json['salaryLastMonth']) ?? 0.0
+          : json['salaryLastMonth']?.toDouble() ?? 0.0,
       maritalStatus: json['maritalStatus'],
       position: json['position'],
-      dob: json['dob'] != null ? DateTime.parse(json['dob']) : null,
-      startDate: json['startDate'] != null ? DateTime.parse(json['startDate']) : null,
+      dob: json['dob'] != null ? DateFormat('yyyy/MM/dd').parse(json['dob']) : null,
       address: json['address'],
       phoneNumber: json['phoneNumber'],
       email: json['email'],
       idNumber: json['idNumber'],
       bankAccountIBAN: json['bankAccountIBAN'],
-      contractEndDate: json['contractEndDate'] != null ? DateTime.parse(json['contractEndDate']) : null,
-      overtimeHoursLastWeek: json['overtimeHoursLastWeek']?.toDouble(),
-      healthInsurance: json['healthInsurance'],
-      idPhoto: json['idPhoto'],
+      overtimeHoursLastWeek: json['overtimeHoursLastWeek'] is String
+          ? double.tryParse(json['overtimeHoursLastWeek']) ?? 0.0
+          : json['overtimeHoursLastWeek']?.toDouble() ?? 0.0,
+      healthInsurance: json['healthInsurance'] is String
+          ? double.tryParse(json['healthInsurance']) ?? 0.0
+          : json['healthInsurance']?.toDouble() ?? 0.0,
+      frontIdPhoto: json['frontIdPhoto'],
+      backIdPhoto: json['backIdPhoto'],
+      frontDrivingLicense: json['frontDrivingLicense'],
+      backDrivingLicense: json['backDrivingLicense'],
       passportPhoto: json['passportPhoto'],
       profilePhoto: json['profilePhoto'],
-      dailyTravelCost: json['dailyTravelCost']?.toDouble(),
-    );
-  }
+      dailyTravelCost: json['dailyTravelCost'] is String
+          ? double.tryParse(json['dailyTravelCost']) ?? 0.0
+          : json['dailyTravelCost']?.toDouble() ?? 0.0,
+    );}
 
-  Map<String, dynamic> toMap() {
+
+    Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'bonusesAndPromotions': bonusesAndPromotions,
+      'contract': contract,
+      'qualifications': qualifications,
       'password': password,
       'uid': uid,
       'bsn': bsn,
+      'bonusesAndPromotions': bonusesAndPromotions,
       'hourlyRate': hourlyRate,
       'weeklyHours': weeklyHours,
       'taxes': taxes,
-      'basicSalary': basicSalary,
       'hoursLastWeek': hoursLastWeek,
       'hoursMissedLastWeek': hoursMissedLastWeek,
       'daysMissedLastWeek': daysMissedLastWeek,
       'salaryLastMonth': salaryLastMonth,
       'maritalStatus': maritalStatus,
       'position': position,
-      'dob': dob?.toIso8601String(), // تحويل التاريخ إلى ISO String
-      'startDate': startDate?.toIso8601String(), // تحويل التاريخ إلى ISO String
+      'dob': dob?.toIso8601String(),
       'address': address,
       'phoneNumber': phoneNumber,
       'email': email,
       'idNumber': idNumber,
       'bankAccountIBAN': bankAccountIBAN,
-      'contractEndDate': contractEndDate?.toIso8601String(), // تحويل التاريخ إلى ISO String
       'overtimeHoursLastWeek': overtimeHoursLastWeek,
       'healthInsurance': healthInsurance,
-      'idPhoto': idPhoto,
+      'frontIdPhoto': frontIdPhoto,
+      'backIdPhoto': backIdPhoto,
+      'frontDrivingLicense': frontDrivingLicense,
+      'backDrivingLicense': backDrivingLicense,
       'passportPhoto': passportPhoto,
       'profilePhoto': profilePhoto,
       'dailyTravelCost': dailyTravelCost,

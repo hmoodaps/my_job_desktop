@@ -5,12 +5,20 @@ import 'package:shimmer_effect/shimmer_effect.dart';
 import '../components/components.dart';
 import '../cubit/app_states.dart';
 import '../cubit/cubit.dart';
+import 'home.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
+
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passController = TextEditingController();
 
   void _showLoginDialog(BuildContext context, String msg) {
@@ -47,15 +55,23 @@ class LoginPage extends StatelessWidget {
             builder: (context) => const Center(child: CircularProgressIndicator()),
           );
         } else if (state is LoginFailed) {
+          Navigator.pop(context);
           _showLoginDialog(context, 'Sorry, you don\'t have permissions to be here');
         } else if (state is LoginSuccess) {
           Navigator.pop(context);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const Home()),
+          );
           _showLoginDialog(context, 'Welcome Sir, You Have All Permissions');
+        }else if(state is LoginError){
+          Navigator.pop(context);
+          _showLoginDialog(context, 'Sorry \nWe think there is an error\nin your info');
+
         }
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(leading: IconButton(icon: const Icon(IconlyBroken.arrow_left),onPressed: (){Navigator.pop(context);},),),
           body: Stack(
             children: [
               Container(

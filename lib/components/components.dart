@@ -96,7 +96,7 @@ ThemeData? light = myTheme(
 
 defaultTextFormField({
   required context,
-  required TextEditingController controller,
+   TextEditingController ? controller,
   String labelText = 'labelText',
   double labelFontSize = 16,
   Color labelColor = Colors.black,
@@ -188,11 +188,11 @@ void navigatorTo(BuildContext context, Widget nextPage) {
 }
 
 
-navigatorReplace(context, nextPage) {
+navigatorReplace(BuildContext context, Widget Function() nextPage) {
   Navigator.pushReplacement(
-      context,
+    context,
     PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>  nextPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => nextPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var begin = const Offset(1.0, 0.0);
         var end = Offset.zero;
@@ -205,8 +205,10 @@ navigatorReplace(context, nextPage) {
           child: child,
         );
       },
-    ),);
+    ),
+  );
 }
+
 
 List<Color> myColorList = [
   const Color(0xFFFFF0F5), // Lavender Blush

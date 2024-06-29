@@ -47,31 +47,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAs0undQ_N8Uas70cw-afTUPJX5Ufa_Ykg',
-    appId: '1:936797446486:web:5c21b8b6e6e4fe8db976f7',
-    messagingSenderId: '936797446486',
-    projectId: 'my-jop-9c874',
-    authDomain: 'my-jop-9c874.firebaseapp.com',
-    storageBucket: 'my-jop-9c874.appspot.com',
-    measurementId: 'G-C89R5EQ52N',
+    apiKey: 'AIzaSyBtoqs2u83Ch1IZ8XHg-ThzbX20c8nZ4L8',
+    appId: '1:865050411490:web:0cc1a0c8b8952b78f139bb',
+    messagingSenderId: '865050411490',
+    projectId: 'job-flutter-1a23b',
+    authDomain: 'job-flutter-1a23b.firebaseapp.com',
+    storageBucket: 'job-flutter-1a23b.appspot.com',
+    measurementId: 'G-5TX3KM3C1P',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC7n_DSqO8yUIMAQXZs9g-rV3ymAU8v5w0',
-    appId: '1:936797446486:ios:284ca18eed7fc24fb976f7',
-    messagingSenderId: '936797446486',
-    projectId: 'my-jop-9c874',
-    storageBucket: 'my-jop-9c874.appspot.com',
+    apiKey: 'AIzaSyDZldImTx5zuYEHjYpdMsIXZNIb7QmY48s',
+    appId: '1:865050411490:ios:4e5dec82f4b226a7f139bb',
+    messagingSenderId: '865050411490',
+    projectId: 'job-flutter-1a23b',
+    storageBucket: 'job-flutter-1a23b.appspot.com',
     iosBundleId: 'com.example.myJobDesktop',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAs0undQ_N8Uas70cw-afTUPJX5Ufa_Ykg',
-    appId: '1:936797446486:web:c9679d61517891aab976f7',
-    messagingSenderId: '936797446486',
-    projectId: 'my-jop-9c874',
-    authDomain: 'my-jop-9c874.firebaseapp.com',
-    storageBucket: 'my-jop-9c874.appspot.com',
-    measurementId: 'G-KEMXSP1EQL',
+    apiKey: 'AIzaSyBtoqs2u83Ch1IZ8XHg-ThzbX20c8nZ4L8',
+    appId: '1:865050411490:web:0a8671eea790e455f139bb',
+    messagingSenderId: '865050411490',
+    projectId: 'job-flutter-1a23b',
+    authDomain: 'job-flutter-1a23b.firebaseapp.com',
+    storageBucket: 'job-flutter-1a23b.appspot.com',
+    measurementId: 'G-4TMHFK7JFM',
   );
 }

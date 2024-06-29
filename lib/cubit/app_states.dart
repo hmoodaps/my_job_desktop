@@ -6,7 +6,10 @@ class InitCubit extends AppState {}
 class ToggleLightAndDark extends AppState {}
 class Login extends AppState {}
 class LoginSuccess extends AppState {}
-class LoginError extends AppState {}
+class LoginError extends AppState {
+  final String e;
+  LoginError(this.e);
+}
 class LoggedOut extends AppState {}
 class LoginFailed extends AppState {}
 class LoggingOut extends AppState {}
@@ -60,3 +63,8 @@ class DeleteFileFailed extends AppState{}
 class PickMultipleFiles extends AppState{}
 class UploadFiles extends AppState{}
 class FilePickCancelled extends AppState{}
+class UploadPhoto extends AppState{}
+class PickSinglePhoto extends AppState{}
+class PhotoPickCancelled extends AppState{}
+class GetAllUsers extends AppState{}
+

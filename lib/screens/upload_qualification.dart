@@ -1,13 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
-import 'package:my_job_desktop/components/components.dart';
 import 'package:my_job_desktop/cubit/app_states.dart';
 import 'package:my_job_desktop/cubit/cubit.dart';
+import 'package:my_job_desktop/models/user_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UploadQualification extends StatelessWidget {
-  const UploadQualification({super.key});
+  final UserModel model ;
+  const UploadQualification({super.key, required this.model});
+
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +86,11 @@ class UploadQualification extends StatelessWidget {
             centerTitle: false,
             actions: [
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    FirebaseFirestore.instance.collection('users').doc(model.uid).update({'qualifications' :urls}).then((e){
+                      Navigator.pop(context);
+                    });
+                  },
                   child: const Text('Update Profile',
                       style: TextStyle(color: Colors.blue))),
             ],
@@ -96,7 +103,7 @@ class UploadQualification extends StatelessWidget {
                  alignment: Alignment.topCenter,
                  child: InkWell(
                     onTap: () async {
-                      cub.pickMultipleFiles(field: 'm', uid: 'ahmed').then((
+                      cub.pickMultipleFiles(field: 'Qualifications',uid: model.uid! ).then((
                           value) {
                         urls.addAll(value!) ;
                       });

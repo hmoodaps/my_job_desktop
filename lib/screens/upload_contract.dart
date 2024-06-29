@@ -1,12 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:my_job_desktop/cubit/app_states.dart';
 import 'package:my_job_desktop/cubit/cubit.dart';
+import 'package:my_job_desktop/models/user_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UploadContract extends StatelessWidget {
-  const UploadContract({super.key});
+  final UserModel model;
+  const UploadContract({super.key , required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +82,12 @@ class UploadContract extends StatelessWidget {
             centerTitle: false,
             actions: [
               TextButton(
-                  onPressed: () {},
-                  child: const Text('Update Profile',
+                  onPressed: () {
+                    FirebaseFirestore.instance.collection('users').doc(model.uid).update({'contract' :url}).then((value){
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: const Text('Update',
                       style: TextStyle(color: Colors.blue))),
             ],
           ),
@@ -94,7 +101,7 @@ class UploadContract extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: (){
-                        cub.pickSingleFile(field: 'm',uid: 'ahmed' ).then((value){
+                        cub.pickSingleFile(field: 'Contract',uid: model.uid! ).then((value){
                           url = value??'' ;
                         });
                       },
@@ -122,7 +129,7 @@ class UploadContract extends StatelessWidget {
                     url !='' ?InkWell(
                       onTap: () async {
                         await cub.deleteFile(downloadUrl: url).then((v){
-                          cub.pickSingleFile(field: 'm',uid: 'ahmed' ).then((value){
+                          cub.pickSingleFile(field: 'Contract',uid: model.uid! ).then((value){
                             url = value??'' ;
                           });
                         });

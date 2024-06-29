@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_job_desktop/components/components.dart';
 import 'package:my_job_desktop/cubit/app_states.dart';
 import 'package:my_job_desktop/cubit/cubit.dart';
+import 'package:my_job_desktop/screens/login.dart';
 import 'package:my_job_desktop/screens/programmer.dart';
 
 import 'employees_manage.dart';
@@ -15,9 +16,6 @@ class Home extends StatelessWidget {
     CubitClass cub = CubitClass.get(context);
     return BlocConsumer<CubitClass, AppState>(
       builder: (context, state) {
-        if (state is LoggingOut) {
-          return const Center(child: CircularProgressIndicator());
-        }
         return Scaffold(
             backgroundColor: const Color(0xFF00008B),
             body: Stack(
@@ -205,6 +203,12 @@ class Home extends StatelessWidget {
             ));
       },
       listener: (context, state) {
+        if (state is LoggingOut) {
+          showDialog(context: context, builder: (context)=>const Center(child: CircularProgressIndicator())) ;
+        }
+        if (state is LoggedOut) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+        }
         if (state is LogoutError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),

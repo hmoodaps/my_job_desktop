@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../screens/home.dart';
 import '../../screens/login.dart';
-import '../../screens/welcome.dart';
 import '../cubit/app_states.dart';
 import '../cubit/cubit.dart';
 
@@ -11,7 +10,7 @@ import '../cubit/cubit.dart';
 
 
 class Auth extends StatelessWidget {
-  const Auth ({super.key});
+   const Auth ({super.key});
 
   @override
   Widget build(BuildContext context) {
